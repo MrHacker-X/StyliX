@@ -1,4 +1,4 @@
-# StyliX styled zsh environment — github.com/MrHacker-X
+# StyliX styled zsh environment - github.com/MrHacker-X
 # Sourced from ~/.zshrc via: source ~/.stylix/zshrc
 
 # Skip when temporarily disabled via: stylixx off
@@ -128,7 +128,7 @@ _stylix_login() {
         echo
 
         if [[ -n "$u" && -n "$p" && "$u" == "$expected_u" && "$(printf '%s' "$p" | sha256sum | cut -d' ' -f1)" == "$expected_p" ]]; then
-            printf '\n  \e[1;32m✔  Access granted\e[0m — welcome, \e[1;37m%s\e[0m\n' "$u"
+            printf '\n  \e[1;32m✔  Access granted\e[0m - welcome, \e[1;37m%s\e[0m\n' "$u"
             sleep 0.7
             trap - INT
             return 0

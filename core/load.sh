@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/env bash
-# StyliX boot animation — short and honest
+# StyliX boot animation - short and honest
 frames=(
 "Initializing StyliX shell..."
 "Loading aliases and helpers..."

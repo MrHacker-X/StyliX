@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/env bash
 # github.com/MrHacker-X
-# StyliX installer — zsh edition, fully transparent, no obfuscation, no self-deletion.
+# StyliX installer - zsh edition, fully transparent, no obfuscation, no self-deletion.
 set -u
 
 STYLIX_VERSION="2.0.0"
@@ -60,17 +60,17 @@ fi
 
 # ---------- required core files ----------
 for f in zshrc load.sh bans helpx; do
-    [ -f "$REPO_DIR/core/$f" ] || fail "Missing core/$f — re-clone the repository."
+    [ -f "$REPO_DIR/core/$f" ] || fail "Missing core/$f - re-clone the repository."
 done
 
-# ---------- ensure zsh (no prompts — required) ----------
+# ---------- ensure zsh (no prompts - required) ----------
 if ! command -v zsh >/dev/null 2>&1; then
     info "Installing zsh (required)..."
-    apt update -y && apt install zsh -y || fail "Could not install zsh. Run: apt install zsh — then re-run this installer."
+    apt update -y && apt install zsh -y || fail "Could not install zsh. Run: apt install zsh - then re-run this installer."
     ok "zsh installed."
 fi
 
-# ---------- set default shell to zsh (no prompts — required) ----------
+# ---------- set default shell to zsh (no prompts - required) ----------
 case "${SHELL:-}" in
     */zsh) ok "Default shell is already zsh." ;;
     *)
@@ -78,7 +78,7 @@ case "${SHELL:-}" in
         if command -v chsh >/dev/null 2>&1 && chsh -s zsh 2>/dev/null; then
             ok "Default shell set to zsh (applies after Termux restart)."
         else
-            fail "Could not switch shell automatically. Run: chsh -s zsh — then re-run this installer."
+            fail "Could not switch shell automatically. Run: chsh -s zsh - then re-run this installer."
         fi
         ;;
 esac
@@ -122,7 +122,7 @@ cp "$REPO_DIR/core/helpx"   "$STYLIX_DIR/helpx"
 chmod +x "$STYLIX_DIR/load.sh" "$STYLIX_DIR/helpx"
 ok "Core files in $STYLIX_DIR"
 
-# ---------- zsh-autosuggestions (vendored via git — not on Termux apt) ----------
+# ---------- zsh-autosuggestions (vendored via git - not on Termux apt) ----------
 AS_DIR="$STYLIX_DIR/zsh-autosuggestions"
 AS_URL="https://github.com/zsh-users/zsh-autosuggestions"
 if [ ! -f "$AS_DIR/zsh-autosuggestions.zsh" ]; then
@@ -260,15 +260,15 @@ if [ "${want_login:-n}" = "y" ] || [ "${want_login:-n}" = "Y" ]; then
         if [ -n "$u1" ] && [ -n "$p1" ] && [ "$p1" = "$p2" ]; then
             break
         fi
-        warn "Empty or mismatched credentials — try again."
+        warn "Empty or mismatched credentials - try again."
     done
     printf '%s\n%s\n' "$u1" "$(printf '%s' "$p1" | sha256sum | cut -d' ' -f1)" \
         > "$STYLIX_DIR/login"
     chmod 600 "$STYLIX_DIR/login"
-    ok "Login gate enabled — password stored as SHA-256 hash (chmod 600)."
+    ok "Login gate enabled - password stored as SHA-256 hash (chmod 600)."
 else
     rm -f "$STYLIX_DIR/login"
-    ok "Login skipped — shell opens directly."
+    ok "Login skipped - shell opens directly."
 fi
 
 # ---------- done ----------
