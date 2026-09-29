@@ -1,0 +1,206 @@
+# StyliX styled zsh environment — github.com/MrHacker-X
+# Sourced from ~/.zshrc via: source ~/.stylix/zshrc
+
+# Skip when temporarily disabled via: stylixx off
+[[ -f "$HOME/.stylix/disabled" ]] && return
+
+# Only decorate interactive shells
+[[ $- != *i* ]] && return
+
+# ---------- zsh options ----------
+setopt AUTO_CD               # cd by typing the dir name
+setopt EXTENDED_GLOB         # extended patterns
+setopt GLOB_DOTS             # include dotfiles in globs
+setopt NO_CASE_GLOB          # case-insensitive globs
+setopt CORRECT               # suggest command typo fixes
+setopt HIST_IGNORE_ALL_DUPS  # drop duplicate history entries
+setopt HIST_IGNORE_SPACE     # skip commands starting with space
+setopt SHARE_HISTORY         # share history between shells
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt INTERACTIVE_COMMENTS
+setopt NO_BEEP
+
+# ---------- history ----------
+HISTSIZE=10000
+SAVEHIST=20000
+HISTFILE="$HOME/.stylix/.zsh_history"
+mkdir -p "$HOME/.stylix"
+
+# ---------- colors & prompt ----------
+autoload -Uz colors && colors
+setopt PROMPT_SUBST
+PROMPT=$'%F{green}┬─%F{yellow}[%n%F{white}@%F{blue}%m%F{white}:%~%F{green}]%F{green}─%F{green}[%F{red}%D{%T}%F{green}]
+%F{green}╰─>%F{red}$%F{green} %f'
+
+# ---------- aliases ----------
+alias ls='ls --color=auto'
+alias ll='ls -lh'
+alias l='ls -CF'
+alias la='ls -a'
+alias grep='grep --color=auto'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias cls='clear'
+alias h='history'
+alias p='pwd'
+alias update='pkg update -y && pkg upgrade -y'
+alias instax='pkg install'
+alias ports='ss -tulpn 2>/dev/null || netstat -tulpn 2>/dev/null'
+
+export EDITOR="${EDITOR:-nano}"
+
+# ---------- helpers ----------
+mkcd() {
+    [[ -n "$1" ]] || { echo "usage: mkcd <dir>"; return 1; }
+    mkdir -p "$1" && cd "$1" || return 1
+}
+
+backup() {
+    [[ -e "$1" ]] || { echo "backup: $1 not found"; return 1; }
+    cp -r "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)"
+}
+
+extract() {
+    [[ -f "$1" ]] || { echo "extract: $1 not found"; return 1; }
+    case "$1" in
+        *.tar.gz|*.tgz) tar xzf "$1" ;;
+        *.tar.bz2)      tar xjf "$1" ;;
+        *.tar.xz)       tar xJf "$1" ;;
+        *.tar)          tar xf  "$1" ;;
+        *.zip)          unzip  "$1" ;;
+        *.7z)           7z x    "$1" ;;
+        *.rar)          unrar x "$1" ;;
+        *) echo "extract: unknown format: $1"; return 1 ;;
+    esac
+}
+
+weather() {
+    curl -s "wttr.in/${1:-}?format=3" 2>/dev/null || echo "weather: offline"
+}
+
+helpx() {
+    if [[ -x "$HOME/.stylix/helpx" ]]; then
+        "$HOME/.stylix/helpx"
+    else
+        printf '\n'
+        printf '  \e[1;32m╭────────────────────────────────────────╮\e[0m\n'
+        printf '  \e[1;32m│\e[0m  *  \e[1;37mS T Y L I\e[1;36m X\e[0m  *   \e[2mshortcuts\e[0m         \e[1;32m│\e[0m\n'
+        printf '  \e[1;32m╰────────────────────────────────────────╯\e[0m\n'
+        printf '\n'
+        printf '  ls/ll/la/l   colored listings       .. / ...   up one / two dirs\n'
+        printf '  cls          clear screen          h          history\n'
+        printf '  p            print cwd             update     pkg update + upgrade\n'
+        printf '  instax PKG   install a package     ports      listening ports\n'
+        printf '  mkcd DIR     mkdir + cd            backup F   timestamped backup\n'
+        printf '  extract F    zip/tar/7z/rar        weather C  quick weather\n'
+        printf '  helpx        this help             stylixx    manage StyliX\n'
+        printf '  unstylixx    remove StyliX\n'
+    fi
+}
+
+# ---------- upgraded login screen ----------
+_stylix_login() {
+    local expected_u expected_p u p tries=0 max=3
+    expected_u=$(sed -n '1p' "$HOME/.stylix/login")
+    expected_p=$(sed -n '2p' "$HOME/.stylix/login")
+
+    trap 'printf "\n\e[1;31m  Session aborted.\e[0m\n"; exit 1' INT
+
+    while (( tries < max )); do
+        clear
+        printf '\n'
+        printf '  \e[1;32m╭──────────────────────────────────────────────╮\e[0m\n'
+        printf '  \e[1;32m│\e[0m                                              \e[1;32m│\e[0m\n'
+        printf '  \e[1;32m│\e[0m             *  \e[1;37mS T Y L I\e[1;36m X\e[0m  *                \e[1;32m│\e[0m\n'
+        printf '  \e[1;32m│\e[0m         \e[2m-------- login gate --------\e[0m         \e[1;32m│\e[0m\n'
+        printf '  \e[1;32m│\e[0m                                              \e[1;32m│\e[0m\n'
+        printf '  \e[1;32m├──────────────────────────────────────────────┤\e[0m\n'
+        printf '  \e[1;32m│\e[0m  \e[1;36m>\e[0m authenticate to continue  \e[2m·\e[0m  %d/%d          \e[1;32m│\e[0m\n' "$((tries + 1))" "$max"
+        printf '  \e[1;32m╰──────────────────────────────────────────────╯\e[0m\n'
+        printf '\n'
+        printf '  \e[1;36m┌ username\e[0m\n'
+        printf '  \e[1;36m└─\e[0m\e[1;37m> \e[0m'
+        read -r u
+        printf '  \e[1;36m┌ password\e[0m\n'
+        printf '  \e[1;36m└─\e[0m\e[1;37m> \e[0m'
+        read -rs p
+        echo
+
+        if [[ -n "$u" && -n "$p" && "$u" == "$expected_u" && "$(printf '%s' "$p" | sha256sum | cut -d' ' -f1)" == "$expected_p" ]]; then
+            printf '\n  \e[1;32m✔  Access granted\e[0m — welcome, \e[1;37m%s\e[0m\n' "$u"
+            sleep 0.7
+            trap - INT
+            return 0
+        fi
+
+        tries=$((tries + 1))
+        printf '\n  \e[1;31m✘  Access denied\e[0m  (%d/%d)\n' "$tries" "$max"
+        sleep 1.1
+    done
+
+    printf '\n  \e[1;31mToo many failed attempts. Closing session.\e[0m\n'
+    sleep 1
+    trap - INT
+    exit 1
+}
+
+# ---------- boot + optional login gate ----------
+_stylix_boot() {
+    # Suppress any leftover MOTD noise for this session
+    unset MAIL CHECKMAIL
+    [[ -f "$HOME/.hushlogin" ]] || touch "$HOME/.hushlogin" 2>/dev/null
+
+    clear
+
+    if [[ -f "$HOME/.stylix/login" ]]; then
+        _stylix_login
+        clear
+    elif [[ -x "$HOME/.stylix/load.sh" ]]; then
+        bash "$HOME/.stylix/load.sh" 2>/dev/null
+    fi
+
+    [[ -f "$HOME/.stylix/bans" ]] && cat "$HOME/.stylix/bans"
+    printf '\n  \e[1;32m╭────────────────────────────────────────╮\e[0m\n'
+    printf '  \e[1;32m│\e[0m  \e[1;37mWelcome to\e[0m \e[1;32mStyliX\e[0m \e[2m- styled zsh\e[0m        \e[1;32m│\e[0m\n'
+    printf '  \e[1;32m│\e[0m  Type \e[1;32mhelpx\e[0m for shortcuts              \e[1;32m│\e[0m\n'
+    printf '  \e[1;32m╰────────────────────────────────────────╯\e[0m\n\n'
+}
+
+# Run once per session (not every nested source)
+if [[ -z "${STYLIX_BOOTED:-}" ]]; then
+    export STYLIX_BOOTED=1
+    _stylix_boot
+fi
+unfunction _stylix_boot _stylix_login 2>/dev/null
+
+# ---------- Termux niceties ----------
+if [[ -x /data/data/com.termux/files/usr/libexec/termux/command-not-found ]]; then
+    command_not_found_handler() {
+        /data/data/com.termux/files/usr/libexec/termux/command-not-found "$1"
+    }
+fi
+
+autoload -Uz compinit
+compinit -d "$HOME/.stylix/.zcompdump" 2>/dev/null
+
+# ---------- zsh-autosuggestions ----------
+# Fish-like history suggestions (grey ghost text). Accept with → or End.
+# Bundled under ~/.stylix by the installer (Termux has no apt package).
+_stylix_autosuggest_paths=(
+    "$HOME/.stylix/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    "$PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+)
+for _stylix_as in "${_stylix_autosuggest_paths[@]}"; do
+    if [[ -f "$_stylix_as" ]]; then
+        source "$_stylix_as"
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+        ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+        break
+    fi
+done
+unset _stylix_as _stylix_autosuggest_paths
+
+# Personal overrides last
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

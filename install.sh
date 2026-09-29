@@ -1,24 +1,285 @@
-#!/bin/bash
-skip=50
-set -e
-case $(printf 'X\n' | tail -n +1 2>/dev/null) in
-X) tail_n=-n;;
-*) tail_n=;;
-esac
+#!/data/data/com.termux/files/usr/bin/env bash
+# github.com/MrHacker-X
+# StyliX installer — zsh edition, fully transparent, no obfuscation, no self-deletion.
+set -u
 
-z="
-";n55=' | b';Gg='prin';Ll8s='4 -d';npeT='tf "';Ht=' rev';iLJB='=ogCYlGb5R3UgYmctASbypgLuACZjpwboNWZKIiP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP9wjIg8GajVmCis2bvxGIl12bzV2dhBSZoRHIlV2cgQmbhBCe11mclRHIyV3b5BiblB3blJFIiAyboNWZKICZlRXZsBXbvNGIzlGIwVHdlNHIYlGb5R3UgACIgACIgACIiAyboNWZKIiP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP9wjIg8GajVmCigVLyV2ajFGSy1EI5JEIgACIgACIgACIgACIgICIvh2YlpgI+0TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP90TP9wjIg8GajVmCvh2YlpgC4lGb5R3cu8SZt9GavMXZslmZvgXdtJXZ05SbvN2LhRXYk9SY0FGZvAibpd2bsBidtpgCul2ZvxGI+4DIkJ3b3N3chBHJg8GajVmCul2ZvxGI+4DIl1WYuJXZzVHJg8GajVmCKUmbvRmCi4ibpF2ZhBSeyRHIlNXYlxGUg4CZlZXalNWZyBCdv5GIu9Wa0FWbylmZu92Qg0VIbJCIvh2YlBCIgAiCKkmZgACIgoAcv9GbgUGa0BCdphXZgwCZlZXalNWZyBibvlGdh1mcpZmbvNEIjACIrFWZyJGIgACIgACIgogblhGdgsTXdBCMgEXZtAyPkAyWbBiZpBCIgAiCkVmdpV2YlJHIzlGIu9Wa0FWbylmZu92YgUGa0BiZpByajVGaDByIgACIgogCu9Wa0FWbylmZu92Yft2chBCIgAiCzxWYpRnblRWZyN2X0BXbvJHcgACIgowbkByOlVnc0BSZslGa3pAZlZXalNWZyBycpBibvlGdh1mcpZmbvNGIslGduVHIkJ3b3N3chBHIk5WYgUWbh5mclNXdgI3bmBiclNXdgUGa0BCdw12byBFIjogC0BXayN2cg4Wah1EIjogCK0nCpZGIgACIKQWZ2lWZjVmcgQ3buBycpBibvlGdh1mcpZmbvNEIjACIxAibyVHdlJHIgACIgACIgoQZzxWZgACIgoAZlZXalNWZyBycpBibvlGdh1mcpZmbvNEIjACIxAibyVHdlJHIgACIgACIgogblhGdgsTXdBiIiASP9AiIt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
-" |';f14Rr='ase6';S2Vpb='| ref';Y5='echo';Co6eW='pr';R8XX='echo "';zsw1=' | r';
-TN='|';ZVzU='ef |';wB='" | ba';NB='cho "';etZqX='-d ';yon98='ec';e5c3='| bash';ToZv='tf"
-"';u84='-d';
+STYLIX_VERSION="2.0.0"
+HOME_T="/data/data/com.termux/files/home"
+STYLIX_DIR="$HOME_T/.stylix"
+ZSHRC="$HOME_T/.zshrc"
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
 
-if tail $tail_n +$skip <"$0" | eval "$kXNeQ$cg$Gg$f1Iyx$npeT$iLJB$vknh$Ht$Q5w5s$q7mv5$DZJt$n55$f14Rr$slG$Ll8s$h7bM$Pvf" >/dev/null 2>&1; then
-  ni=$(eval "$kXNeQ$cg$Gg$f1Iyx$npeT$iLJB$vknh$Ht$Q5w5s$q7mv5$DZJt$n55$f14Rr$slG$Ll8s$h7bM$Pvf")
-  eval "$slG$IK8$vG3ys$H9vR7Q$ni$H9vR7Q$oW8o$kXNeQ$Etlb"
+# ---------- colors ----------
+if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+    RD=$'\e[31m'; GR=$'\e[32m'; CY=$'\e[36m'; BW=$'\e[1m'; DM=$'\e[2m'; XX=$'\e[0m'
 else
-  printf >&2 '\033[1;91m%s\033[m\n\033[1;97m%s\033[m\n' "Cannot decode ${0##*/}" "Report bugs <fajarrkim@gmail.com>"
-  exit 1
+    RD=""; GR=""; CY=""; BW=""; DM=""; XX=""
 fi
 
-# Thank you!
-# ¯\_(ツ)_/¯
+info() { printf '%s[*]%s %s\n' "$CY" "$XX" "$1"; }
+ok()   { printf '%s[+]%s %s\n' "$GR" "$XX" "$1"; }
+warn() { printf '%s[!]%s %s\n' "$CY" "$XX" "$1"; }
+err()  { printf '%s[x]%s %s\n' "$RD" "$XX" "$1" >&2; }
+fail() { err "$1"; exit 1; }
+
+WH=$'\e[1;97m'
+GN=$'\e[1;32m'
+
+# ---------- Termux guard ----------
+[ -n "${TERMUX_VERSION:-}" ] || fail "StyliX runs ONLY inside Termux."
+[ -d "$HOME_T" ] || fail "Termux home not found at $HOME_T."
+
+# ---------- heading ----------
+printf '\n'
+printf '%s\n' "  ${GN}╭──────────────────────────────────────────────────╮${XX}"
+printf '%s\n' "  ${GN}│${XX}                                                  ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}███████╗████████╗██╗   ██╗██╗      ██╗${CY}██╗  ██╗${XX}   ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}██╔════╝╚══██╔══╝╚██╗ ██╔╝██║      ██║${CY}╚██╗██╔╝${XX}   ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}███████╗   ██║    ╚████╔╝ ██║  ███╗██║${CY} ╚███╔╝${XX}   ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}╚════██║   ██║     ╚██╔╝  ██║   ██║██║${CY} ██╔██╗${XX}   ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}███████║   ██║      ██║   ╚██████╔╝██║${CY}██╔╝ ██╗${XX}  ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${WH}╚══════╝   ╚═╝      ╚═╝    ╚═════╝ ╚═╝${CY}╚═╝  ╚═╝${XX}  ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}                                                  ${GN}│${XX}"
+printf '%s\n' "  ${GN}├──────────────────────────────────────────────────┤${XX}"
+printf '%s\n' "  ${GN}│${XX}    ${CY}>${XX} styled zsh for Termux  ${DM}·${XX}  ${BW}v${STYLIX_VERSION}${XX}  ${CY}<${XX}         ${GN}│${XX}"
+printf '%s\n' "  ${GN}╰──────────────────────────────────────────────────╯${XX}"
+echo
+
+# ---------- uninstall mode ----------
+if [ "${1:-}" = "--uninstall" ]; then
+    if [ -x "$PREFIX/bin/unstylixx" ]; then
+        "$PREFIX/bin/unstylixx"
+    elif [ -f "$STYLIX_DIR/uninstall.sh" ]; then
+        bash "$STYLIX_DIR/uninstall.sh"
+    else
+        err "StyliX is not installed."
+    fi
+    exit 0
+fi
+
+# ---------- required core files ----------
+for f in zshrc load.sh bans helpx; do
+    [ -f "$REPO_DIR/core/$f" ] || fail "Missing core/$f — re-clone the repository."
+done
+
+# ---------- ensure zsh (no prompts — required) ----------
+if ! command -v zsh >/dev/null 2>&1; then
+    info "Installing zsh (required)..."
+    apt update -y && apt install zsh -y || fail "Could not install zsh. Run: apt install zsh — then re-run this installer."
+    ok "zsh installed."
+fi
+
+# ---------- set default shell to zsh (no prompts — required) ----------
+case "${SHELL:-}" in
+    */zsh) ok "Default shell is already zsh." ;;
+    *)
+        info "Switching default shell to zsh..."
+        if command -v chsh >/dev/null 2>&1 && chsh -s zsh 2>/dev/null; then
+            ok "Default shell set to zsh (applies after Termux restart)."
+        else
+            fail "Could not switch shell automatically. Run: chsh -s zsh — then re-run this installer."
+        fi
+        ;;
+esac
+
+# ---------- silence Termux default MOTD ----------
+info "Disabling default Termux MOTD..."
+touch "$HOME_T/.hushlogin"
+for motd in \
+    "$PREFIX/etc/motd" \
+    "$PREFIX/etc/motd-playstore" \
+    "$PREFIX/etc/motd.sh"
+do
+    if [ -e "$motd" ] && [ ! -e "${motd}.stylix-bak" ]; then
+        cp -a "$motd" "${motd}.stylix-bak" 2>/dev/null || true
+    fi
+    if [ -f "$motd" ]; then
+        : > "$motd"
+    elif [ -e "$motd" ]; then
+        rm -f "$motd"
+        : > "$motd"
+    fi
+done
+ok "Default MOTD silenced (backed up as *.stylix-bak)."
+
+# ---------- backup existing zshrc (once) ----------
+touch "$ZSHRC"
+if [ -f "$ZSHRC" ] && [ ! -f "$ZSHRC.pre-stylix" ]; then
+    cp "$ZSHRC" "$ZSHRC.pre-stylix"
+    ok "Original ~/.zshrc backed up to ~/.zshrc.pre-stylix"
+fi
+
+# ---------- install core files ----------
+info "Installing core files..."
+mkdir -p "$STYLIX_DIR"
+rm -f "$STYLIX_DIR/disabled"
+
+cp "$REPO_DIR/core/zshrc"   "$STYLIX_DIR/zshrc"
+cp "$REPO_DIR/core/load.sh" "$STYLIX_DIR/load.sh"
+cp "$REPO_DIR/core/bans"    "$STYLIX_DIR/bans"
+cp "$REPO_DIR/core/helpx"   "$STYLIX_DIR/helpx"
+chmod +x "$STYLIX_DIR/load.sh" "$STYLIX_DIR/helpx"
+ok "Core files in $STYLIX_DIR"
+
+# ---------- zsh-autosuggestions (vendored via git — not on Termux apt) ----------
+AS_DIR="$STYLIX_DIR/zsh-autosuggestions"
+AS_URL="https://github.com/zsh-users/zsh-autosuggestions"
+if [ ! -f "$AS_DIR/zsh-autosuggestions.zsh" ]; then
+    info "Installing zsh-autosuggestions..."
+    rm -rf "$AS_DIR"
+    if command -v git >/dev/null 2>&1; then
+        git clone --depth 1 "$AS_URL.git" "$AS_DIR" \
+            || fail "Could not clone zsh-autosuggestions. Check network and re-run."
+    elif command -v curl >/dev/null 2>&1; then
+        mkdir -p "$AS_DIR"
+        curl -fsSL "$AS_URL/archive/refs/heads/master.tar.gz" \
+            | tar xz -C "$AS_DIR" --strip-components=1 \
+            || fail "Could not download zsh-autosuggestions. Check network and re-run."
+    else
+        fail "Need git or curl to install zsh-autosuggestions."
+    fi
+    ok "zsh-autosuggestions installed to ~/.stylix/zsh-autosuggestions"
+else
+    ok "zsh-autosuggestions already present."
+fi
+
+# ---------- hook into ~/.zshrc (source, don't inline) ----------
+if grep -q "# >>> stylix >>>" "$ZSHRC" 2>/dev/null; then
+    # portable strip of previous block (GNU sed on Termux)
+    sed -i '/# >>> stylix >>>/,/# <<< stylix <<</d' "$ZSHRC"
+fi
+# also strip legacy bash hook if present
+if grep -q "# >>> stylix >>>" "$HOME_T/.bashrc" 2>/dev/null; then
+    sed -i '/# >>> stylix >>>/,/# <<< stylix <<</d' "$HOME_T/.bashrc"
+    ok "Removed legacy StyliX bash hook from ~/.bashrc"
+fi
+
+{
+    echo ""
+    echo "# >>> stylix >>>"
+    echo "[ -f \"$STYLIX_DIR/zshrc\" ] && source \"$STYLIX_DIR/zshrc\""
+    echo "# <<< stylix <<<"
+} >> "$ZSHRC"
+ok "Styled zsh environment hooked into ~/.zshrc"
+
+# ---------- management commands ----------
+cat > "$PREFIX/bin/stylixx" <<'EOF'
+#!/data/data/com.termux/files/usr/bin/env bash
+# StyliX manager
+STYLIX_DIR="${HOME}/.stylix"
+case "${1:-help}" in
+    on)
+        rm -f "$STYLIX_DIR/disabled"
+        echo "[+] StyliX enabled. Restart your shell."
+        ;;
+    off)
+        mkdir -p "$STYLIX_DIR"
+        touch "$STYLIX_DIR/disabled"
+        echo "[-] StyliX disabled. Restart your shell."
+        ;;
+    status)
+        if [ ! -f "$STYLIX_DIR/zshrc" ]; then
+            echo "[-] StyliX is not installed."
+        elif [ -f "$STYLIX_DIR/disabled" ]; then
+            echo "[-] StyliX is disabled."
+        else
+            echo "[+] StyliX is enabled."
+        fi
+        ;;
+    *)
+        echo "StyliX manager"
+        echo "  stylixx on       enable the styled shell"
+        echo "  stylixx off      disable it temporarily"
+        echo "  stylixx status   show current state"
+        echo "  unstylixx        uninstall completely"
+        ;;
+esac
+EOF
+chmod +x "$PREFIX/bin/stylixx"
+
+cat > "$PREFIX/bin/unstylixx" <<'EOF'
+#!/data/data/com.termux/files/usr/bin/env bash
+# StyliX uninstaller
+set -u
+HOME_T="${HOME:-/data/data/com.termux/files/home}"
+ZSHRC="$HOME_T/.zshrc"
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+
+echo "[+] Removing StyliX..."
+if [ -f "$ZSHRC" ]; then
+    sed -i '/# >>> stylix >>>/,/# <<< stylix <<</d' "$ZSHRC"
+fi
+# clean legacy bash hook too
+if [ -f "$HOME_T/.bashrc" ]; then
+    sed -i '/# >>> stylix >>>/,/# <<< stylix <<</d' "$HOME_T/.bashrc" 2>/dev/null || true
+fi
+rm -rf "$HOME_T/.stylix"
+rm -f "$PREFIX/bin/stylixx" "$PREFIX/bin/unstylixx" "$PREFIX/bin/helpx"
+rm -f "$HOME_T/.hushlogin"
+
+# restore Termux MOTD backups
+for bak in \
+    "$PREFIX/etc/motd.stylix-bak" \
+    "$PREFIX/etc/motd-playstore.stylix-bak" \
+    "$PREFIX/etc/motd.sh.stylix-bak"
+do
+    if [ -e "$bak" ]; then
+        dest="${bak%.stylix-bak}"
+        mv -f "$bak" "$dest"
+        echo "[+] Restored $(basename "$dest")"
+    fi
+done
+
+if [ -f "$ZSHRC.pre-stylix" ]; then
+    cp "$ZSHRC.pre-stylix" "$ZSHRC"
+    echo "[+] Restored ~/.zshrc from ~/.zshrc.pre-stylix"
+fi
+
+echo "[+] StyliX removed. Restart your shell."
+EOF
+chmod +x "$PREFIX/bin/unstylixx"
+
+# keep a copy for: bash install.sh --uninstall
+cp "$PREFIX/bin/unstylixx" "$STYLIX_DIR/uninstall.sh"
+chmod +x "$STYLIX_DIR/uninstall.sh"
+
+cp "$REPO_DIR/core/helpx" "$PREFIX/bin/helpx"
+chmod +x "$PREFIX/bin/helpx"
+ok "Commands installed: stylixx · unstylixx · helpx"
+
+# ---------- optional login gate ----------
+echo
+printf '%s[?]%s Set up a login screen? %s[y/N]%s ' "$CY" "$XX" "$BW" "$XX"
+read -r want_login
+if [ "${want_login:-n}" = "y" ] || [ "${want_login:-n}" = "Y" ]; then
+    while true; do
+        printf '%s[?]%s Username: ' "$CY" "$XX"; read -r u1
+        printf '%s[?]%s Password: ' "$CY" "$XX"; read -r -s p1; echo
+        printf '%s[?]%s Confirm password: ' "$CY" "$XX"; read -r -s p2; echo
+        if [ -n "$u1" ] && [ -n "$p1" ] && [ "$p1" = "$p2" ]; then
+            break
+        fi
+        warn "Empty or mismatched credentials — try again."
+    done
+    printf '%s\n%s\n' "$u1" "$(printf '%s' "$p1" | sha256sum | cut -d' ' -f1)" \
+        > "$STYLIX_DIR/login"
+    chmod 600 "$STYLIX_DIR/login"
+    ok "Login gate enabled — password stored as SHA-256 hash (chmod 600)."
+else
+    rm -f "$STYLIX_DIR/login"
+    ok "Login skipped — shell opens directly."
+fi
+
+# ---------- done ----------
+echo
+printf '%s\n' "  ${GN}╭──────────────────────────────────────────────────╮${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${GR}✔  StyliX installed${XX}                             ${GN}│${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${BW}Restart Termux to enter your styled zsh shell${XX}   ${GN}│${XX}"
+printf '%s\n' "  ${GN}├──────────────────────────────────────────────────┤${XX}"
+printf '%s\n' "  ${GN}│${XX}  ${DM}created by${XX} ${BW}MrHacker-X${XX}                           ${GN}│${XX}"
+printf '%s\n' "  ${GN}╰──────────────────────────────────────────────────╯${XX}"
+echo
+info "After restart type ${BW}helpx${XX} to see all shortcuts."
+info "Manage: ${BW}stylixx on | off | status${XX}   Uninstall: ${BW}unstylixx${XX}"
+echo

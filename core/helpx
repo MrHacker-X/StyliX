@@ -1,0 +1,16 @@
+#!/data/data/com.termux/files/usr/bin/env bash
+# StyliX shortcut reference
+printf '\n'
+printf '  \e[1;32m╭────────────────────────────────────────╮\e[0m\n'
+printf '  \e[1;32m│\e[0m  *  \e[1;37mS T Y L I\e[1;36m X\e[0m  *   \e[2mshortcuts\e[0m         \e[1;32m│\e[0m\n'
+printf '  \e[1;32m╰────────────────────────────────────────╯\e[0m\n'
+printf '\n'
+printf '  ls/ll/la/l   colored listings       .. / ...   up one / two dirs\n'
+printf '  cls          clear screen          h          history\n'
+printf '  p            print cwd             update     pkg update + upgrade\n'
+printf '  instax PKG   install a package     ports      listening ports\n'
+printf '  mkcd DIR     mkdir + cd            backup F   timestamped backup\n'
+printf '  extract F    zip/tar/7z/rar        weather C  quick weather\n'
+printf '  helpx        this help             stylixx    manage StyliX\n'
+printf '  unstylixx    remove StyliX\n'
+printf '\n  \e[2mManage: stylixx on | off | status\e[0m\n'
