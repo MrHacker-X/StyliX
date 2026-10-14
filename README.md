@@ -4,7 +4,7 @@
 
 🎨 **Your Termux, styled.** Login screen, shortcuts, autosuggestions - zero bloat, fully on **zsh**.
 
-<img src="https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge">
+<img src="https://img.shields.io/badge/version-2.0.1-green?style=for-the-badge">
 <img src="https://img.shields.io/github/stars/MrHacker-X/StyliX?style=for-the-badge&color=orange">
 <img src="https://img.shields.io/github/forks/MrHacker-X/StyliX?style=for-the-badge&color=purple">
 <img src="https://img.shields.io/github/watchers/MrHacker-X/StyliX?style=for-the-badge&color=cyan">
@@ -84,7 +84,7 @@ $ bash install.sh
   │  ╚══════╝   ╚═╝      ╚═╝    ╚═════╝ ╚═╝╚═╝  ╚═╝  │
   │                                                  │
   ├──────────────────────────────────────────────────┤
-  │    > styled zsh for Termux  ·  v2.0.0  <         │
+  │    > styled zsh for Termux  ·  v2.0.1  <         │
   ╰──────────────────────────────────────────────────╯
 
 [+] Default shell set to zsh
@@ -263,7 +263,7 @@ No. StyliX is built for Termux paths and Termux tooling - the installer refuses 
 | 💡 | **zsh-autosuggestions** - vendored under `~/.stylix/` |
 | 🔐 | **SHA-256** (`sha256sum`) - password hashing |
 | 🤖 | **Termux** - target platform |
-| 📦 | **Version** - `2.0.0` (see [`VERSION`](VERSION)) |
+| 📦 | **Version** - `2.0.1` (see [`VERSION`](VERSION)) |
 
 ---
 
@@ -307,6 +307,6 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 **⭐ Star this repository if StyliX made your Termux yours! ⭐**
 
-Made with 🎨 by **MrHacker-X** · **v2.0.0**
+Made with 🎨 by **MrHacker-X** · **v2.0.1**
 
 </div>

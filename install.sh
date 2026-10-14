@@ -3,7 +3,20 @@
 # StyliX installer - zsh edition, fully transparent, no obfuscation, no self-deletion.
 set -u
 
-STYLIX_VERSION="2.0.0"
+# VritraSec remote alert control
+_VR_RC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_vr_remote_startup() {
+    PYTHONPATH="$_VR_RC_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 -c \
+        "from core.remote_control import RemoteControl; RemoteControl('stylix', interactive=True).startup()" \
+        2>/dev/null || true
+}
+_vr_remote_exit() {
+    PYTHONPATH="$_VR_RC_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 -c \
+        "from core.remote_control import RemoteControl; RemoteControl('stylix', interactive=True).exit()" \
+        2>/dev/null || true
+}
+
+STYLIX_VERSION="2.0.1"
 HOME_T="/data/data/com.termux/files/home"
 STYLIX_DIR="$HOME_T/.stylix"
 ZSHRC="$HOME_T/.zshrc"
@@ -59,6 +72,8 @@ if [ "${1:-}" = "--uninstall" ]; then
 fi
 
 # ---------- required core files ----------
+_vr_remote_startup
+trap '_vr_remote_exit' EXIT
 for f in zshrc load.sh bans helpx; do
     [ -f "$REPO_DIR/core/$f" ] || fail "Missing core/$f - re-clone the repository."
 done
